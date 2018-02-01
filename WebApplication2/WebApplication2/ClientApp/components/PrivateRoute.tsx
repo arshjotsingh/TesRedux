@@ -1,6 +1,6 @@
 ﻿import * as React from "react"
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom"
-import { fakeAuth } from "../dummy";
+import { fakeAuth } from "./dummy";
 type RouteComponent = React.StatelessComponent<RouteComponentProps<{}>> | React.ComponentClass<any>
 
 export const PrivateRoute: React.StatelessComponent<RouteProps> = ({ component, ...rest }) => {

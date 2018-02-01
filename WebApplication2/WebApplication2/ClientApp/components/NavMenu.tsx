@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { AuthButton } from './todo/AuthButton';
 
 export class NavMenu extends React.Component<{}, {}> {
     public render() {
@@ -29,6 +30,9 @@ export class NavMenu extends React.Component<{}, {}> {
                         </li>
                     </ul>
                 </div>
+
+                <AuthButton />
+
             </div>
         </div>;
     }

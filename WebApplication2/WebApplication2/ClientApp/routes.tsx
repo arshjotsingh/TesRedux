@@ -8,12 +8,15 @@ import HomePage from './components/home/HomePage';
 import AboutPage from './components/about/AboutPage';
 import TodosPage from './components/todo/TodoPage';
 import ManageTodoPage from './components/todo/ManageTodoPage';
+import { PrivateRoute } from './components/PrivateRoute';
+import Login from './components/Login';
 
 export const routes = <Layout>
     <Route exact path='/' component={Home} />
     <Route path='/counter' component={Counter} />
     <Route path='/about' component={AboutPage} />
-    <Route path='/todos' component={TodosPage} />
+    <Route path='/login' component={Login} />
     <Route path='/todo/:id?' component={ManageTodoPage} />
     <Route path='/fetchdata/:startDateIndex?' component={FetchData} />
+    <PrivateRoute path='/todos' component={TodosPage} />
 </Layout>;

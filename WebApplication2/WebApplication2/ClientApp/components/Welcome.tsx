@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { fakeAuth } from '../dummy';
+import { fakeAuth } from './dummy';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { IWithPersonalizationProps, withPersonalization } from './withPersonalization';
 import { IWithNavigationProps, withNavigation } from './withNavigation';

@@ -2,9 +2,7 @@
 import { fakeAuth } from './dummy';
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom"
 
-
 export default class Login extends React.Component<RouteComponentProps<{}>, {}> {
-
 
     state = {
         redirectToReferrer: false
