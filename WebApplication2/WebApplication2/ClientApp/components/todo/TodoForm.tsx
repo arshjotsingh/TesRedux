@@ -7,8 +7,8 @@ import { toastr } from 'react-redux-toastr'
 
 export interface TodoProps {
     todo: TodoState.Todo;
-    errors: any;
-    saving: boolean;
+    errors: string;
+    isFetching: boolean;
     onChange: (event: any) => void;
     onSave: (event: any) => void;
     onDelete: (event: any) => void;
@@ -25,19 +25,19 @@ export class TodoForm extends React.Component<TodoProps, {}> {
                     label="Name"
                     value={this.props.todo.name}
                     onChange={this.props.onChange}
-                    error={this.props.errors.name} />
+                    error={this.props.errors} />
                 <label htmlFor="isComplete">Is Complete: {this.props.todo.isComplete.toString()}</label>
                 <br/>
                 <input
                     type="submit"
-                    disabled={this.props.saving}
-                    value={this.props.saving ? 'Saving...' : 'Save'}
+                    disabled={this.props.isFetching}
+                    value={this.props.isFetching ? 'Saving...' : 'Save'}
                     className="btn btn-primary"
                     onClick={this.props.onSave} />
                 <input
                     type="submit"
-                    disabled={this.props.saving}
-                    value={this.props.saving ? 'Delete...' : 'Delete'}
+                    disabled={this.props.isFetching}
+                    value={this.props.isFetching ? 'Delete...' : 'Delete'}
                     className="btn btn-danger"
                     onClick={this.props.onDelete}
                     //onClick={() => toastr.success('The title', 'The message')}

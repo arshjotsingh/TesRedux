@@ -25,12 +25,6 @@
     <Compile Remove="Controllers\SampleDataController.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="ErplyAPI">
-      <HintPath>ErplyAPI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

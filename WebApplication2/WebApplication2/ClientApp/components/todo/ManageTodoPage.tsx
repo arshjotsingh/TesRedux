@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
 import * as TodoState from '../../store/Todos';
@@ -9,7 +9,9 @@ import * as toastr from "react-redux-toastr";
 
 
 export interface localProps {
-    todo: TodoState.Todo
+    todo: TodoState.Todo;
+    isFetching: boolean;
+    error: string;
 }
 
 type TodoProps =
@@ -20,8 +22,6 @@ type TodoProps =
 
 export interface localState {
     todo: TodoState.Todo;
-    errors: string;
-    saving: boolean;
     onChange: (event: any) => void;
     onSave: (event: any) => void;
     onDelete: (event: any) => void;
@@ -35,11 +35,9 @@ export class ManageTodoPage extends React.Component<TodoProps, localState> {
 
         this.state = {
             todo: props.todo,
-            errors: "",
-            saving: false,
             onChange: this.onChange,
             onSave: this.saveTodo,
-            onDelete: this.deleteTodo
+            onDelete: this.deleteTodo,
         }; // using local state with saving option
 
         this.onChange = this.onChange.bind(this);
@@ -54,8 +52,6 @@ export class ManageTodoPage extends React.Component<TodoProps, localState> {
             this.setState({ todo: Object.assign({}, nextProps.todo) });
         }
     }
-
-
 
 
     public onChange(event: any): void {
@@ -87,7 +83,6 @@ export class ManageTodoPage extends React.Component<TodoProps, localState> {
         if (this.state.todo.name.length < 2) {
             let errors = 'Name must be at least 5 characters.';
             formIsValid = false;
-            this.setState({ errors: errors });
         }
 
         return formIsValid;
@@ -103,31 +98,23 @@ export class ManageTodoPage extends React.Component<TodoProps, localState> {
 
         const todoId = this.props.match.params.id; // from the path 'todo/id'
         if (todoId) {
-            Promise.resolve(this.props.editTodo(this.state.todo));
+            Promise.resolve(this.props.editTodo(this.state.todo)).then(s => this.redirect());
         }
         else {
-            Promise.resolve(this.props.saveTodo(this.state.todo));
+            Promise.resolve(this.props.saveTodo(this.state.todo)).then(s => this.redirect());
         }
-
-       
-        this.setState({ saving: false });
-        this.redirect();
-
+        
     }
 
     deleteTodo(event: any) {
         event.preventDefault();
-        console.log(this.props);
-        const todoId = this.props.match.params.id; // from the path 'todo/id'
-        if (todoId) {
+        if (this.props.todo.id) {
             let id = Number(this.state.todo.id);
-            Promise.resolve(this.props.deleteTodo(id)).then(s => alert("Done"));
+            Promise.resolve(this.props.deleteTodo(id)).then(s => this.redirect());
         }
-        this.redirect();
     }
 
     redirect() {
-        this.setState({ saving: false });
         this.props.history.push('/todos');
     }
 
@@ -135,8 +122,8 @@ export class ManageTodoPage extends React.Component<TodoProps, localState> {
         return (
             <TodoForm
                 todo={this.state.todo}
-                errors={this.state.errors}
-                saving={this.state.saving}
+                errors={this.props.error}
+                isFetching={this.props.isFetching}
                 onChange={this.onChange}
                 onSave={this.saveTodo}
                 onDelete={this.deleteTodo}
@@ -153,12 +140,16 @@ const mapStateToProps = (state: ApplicationState, ownProps: TodoProps) => {
 
     if (todoId) {
         return {
-            todo: state.todos.todos.filter(x => x.id === Number(ownProps.match.params.id))[0]
+            todo: state.todos.todos.filter(x => x.id === Number(ownProps.match.params.id))[0],
+            isFetching: state.todos.isFetching,
+            error: state.todos.error
         }
     }
 
     return {
-        todo: todo
+        todo: todo,
+        isFetching: state.todos.isFetching,
+        error: state.todos.error
     }
 }
 

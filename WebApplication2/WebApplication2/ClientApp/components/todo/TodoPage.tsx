@@ -22,7 +22,7 @@ export class TodosPage extends React.Component<TodoProps, {}> {
    
     componentWillMount() {
         // This method runs when the component is first added to the page
-        Promise.resolve(this.props.getTodos());
+        this.props.getTodos();
     }
 
     todoRow(todo: TodoState.Todo, index: any) {
@@ -36,6 +36,7 @@ export class TodosPage extends React.Component<TodoProps, {}> {
                 <h1>Todo List</h1>
                 <Link to='/todo' className="btn btn-primary">Add Todo</Link>
                 <TodoList todos={this.props.todos} />
+                <button type="button" className="btn btn-warning"> {this.props.isFetching ? 'Fetching...' : 'Fetched'}</button>
             </div>
         );
     }
