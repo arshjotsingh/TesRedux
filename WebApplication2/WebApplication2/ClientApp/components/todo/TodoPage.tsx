@@ -4,12 +4,15 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../../store';
 import * as TodoState from '../../store/Todos';
 import { TodoList } from '../todo/TodoList';
-
+import { withRouter } from 'react-router';
+import * as toastr  from 'toastr';
 
 type TodoProps =
     TodoState.TodoState        // ... state we've requested from the Redux store
     & typeof TodoState.actionCreators      // ... plus action creators we've requested
     & RouteComponentProps<{}>;
+
+
 
 export class TodosPage extends React.Component<TodoProps, {}> {
     constructor(props: TodoProps) {
@@ -19,29 +22,19 @@ export class TodosPage extends React.Component<TodoProps, {}> {
    
     componentWillMount() {
         // This method runs when the component is first added to the page
-        this.props.getTodos();
+        Promise.resolve(this.props.getTodos());
     }
 
     todoRow(todo: TodoState.Todo, index: any) {
         return <div key={index}> {todo.name} </div>;
     }
 
-    redirectToAddTodoPage(event:any) {
-        this.props.history.push('/todo');
-
-      
-        //this.props.history.push('/todo');
-        
-    }
-
+  
     public render() {
         return (
             <div>
                 <h1>Todo List</h1>
-                <input type="submit"
-                    value="Add Todo"
-                    className="btn btn-primary"
-                    onClick={this.redirectToAddTodoPage} />
+                <Link to='/todo' className="btn btn-primary">Add Todo</Link>
                 <TodoList todos={this.props.todos} />
             </div>
         );

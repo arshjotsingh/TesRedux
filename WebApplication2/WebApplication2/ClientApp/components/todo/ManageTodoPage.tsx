@@ -5,6 +5,7 @@ import { ApplicationState } from '../../store';
 import * as TodoState from '../../store/Todos';
 import { TodoList } from '../todo/TodoList';
 import { TodoForm } from '../todo/TodoForm';
+import * as toastr from "react-redux-toastr";
 
 
 export interface localProps {
@@ -23,6 +24,7 @@ export interface localState {
     saving: boolean;
     onChange: (event: any) => void;
     onSave: (event: any) => void;
+    onDelete: (event: any) => void;
 }
 
 
@@ -36,11 +38,13 @@ export class ManageTodoPage extends React.Component<TodoProps, localState> {
             errors: "",
             saving: false,
             onChange: this.onChange,
-            onSave: this.saveTodo
+            onSave: this.saveTodo,
+            onDelete: this.deleteTodo
         }; // using local state with saving option
 
         this.onChange = this.onChange.bind(this);
         this.saveTodo = this.saveTodo.bind(this);
+        this.deleteTodo = this.deleteTodo.bind(this);
 
     }
 
@@ -76,11 +80,11 @@ export class ManageTodoPage extends React.Component<TodoProps, localState> {
         return this.setState({ todo: todo });
     }
 
-    courseFormIsValid() {
+    formIsValid() {
         let formIsValid = true;
         //let errors = ;
 
-        if (this.state.todo.name.length < 5) {
+        if (this.state.todo.name.length < 2) {
             let errors = 'Name must be at least 5 characters.';
             formIsValid = false;
             this.setState({ errors: errors });
@@ -92,21 +96,39 @@ export class ManageTodoPage extends React.Component<TodoProps, localState> {
     saveTodo(event: any) {
         event.preventDefault();
 
-        if (!this.courseFormIsValid()) {
+        if (!this.formIsValid()) {
             return;
         }
 
 
-        this.props.saveTodo(this.state.todo);
-        this.setState({ saving: false });
+        const todoId = this.props.match.params.id; // from the path 'todo/id'
+        if (todoId) {
+            Promise.resolve(this.props.editTodo(this.state.todo));
+        }
+        else {
+            Promise.resolve(this.props.saveTodo(this.state.todo));
+        }
 
+       
+        this.setState({ saving: false });
+        this.redirect();
 
     }
 
+    deleteTodo(event: any) {
+        event.preventDefault();
+        console.log(this.props);
+        const todoId = this.props.match.params.id; // from the path 'todo/id'
+        if (todoId) {
+            let id = Number(this.state.todo.id);
+            Promise.resolve(this.props.deleteTodo(id)).then(s => alert("Done"));
+        }
+        this.redirect();
+    }
+
     redirect() {
-        //this.setState({ saving: false });
-        //toastr.success('Course Saved');
-        //this.context.router.push('/courses');
+        this.setState({ saving: false });
+        this.props.history.push('/todos');
     }
 
     render() {
@@ -117,13 +139,31 @@ export class ManageTodoPage extends React.Component<TodoProps, localState> {
                 saving={this.state.saving}
                 onChange={this.onChange}
                 onSave={this.saveTodo}
+                onDelete={this.deleteTodo}
             />
         );
     }
 };
 
+
+const mapStateToProps = (state: ApplicationState, ownProps: TodoProps) => {
+    const todoId = ownProps.match.params.id; // from the path 'course/id'
+    console.log(todoId);
+    let todo = { name: '', isComplete: false };
+
+    if (todoId) {
+        return {
+            todo: state.todos.todos.filter(x => x.id === Number(ownProps.match.params.id))[0]
+        }
+    }
+
+    return {
+        todo: todo
+    }
+}
+
 export default connect(
-    (state: ApplicationState, ownProps: TodoProps) => ({ todo: state.todos.todos.filter(x => x.id === Number(ownProps.match.params.id))[0] }), // Selects which state properties are merged into the component's props
+    mapStateToProps,
     TodoState.actionCreators                 // Selects which action creators are merged into the component's props
 )(ManageTodoPage) as typeof ManageTodoPage;
 

@@ -1,6 +1,7 @@
 import * as WeatherForecasts from './WeatherForecasts';
 import * as Counter from './Counter';
 import * as Todos from './Todos';
+import { reducer as toastrReducer } from 'react-redux-toastr';
 
 // The top-level state object
 export interface ApplicationState {
@@ -15,7 +16,8 @@ export interface ApplicationState {
 export const reducers = {
     counter: Counter.reducer,
     weatherForecasts: WeatherForecasts.reducer,
-    todos: Todos.reducer
+    todos: Todos.reducer,
+    toastr: toastrReducer
 };
 
 // This type can be used as a hint on action creators so that its 'dispatch' and 'getState' params are

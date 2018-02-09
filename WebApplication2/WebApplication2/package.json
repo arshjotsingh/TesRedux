@@ -14,6 +14,8 @@
     "@types/redux-actions": "^2.2.3",
     "@types/webpack": "2.2.15",
     "@types/webpack-env": "1.13.0",
+    "@types/toastr": "2.1.35",
+    "@types/react-redux-toastr": "7.0.9",
     "aspnet-prerendering": "^3.0.1",
     "aspnet-webpack": "^2.0.1",
     "aspnet-webpack-react": "^3.0.0",
@@ -40,7 +42,9 @@
     "url-loader": "0.5.9",
     "webpack": "2.5.1",
     "webpack-hot-middleware": "2.18.2",
-    "webpack-merge": "4.1.0"
+    "webpack-merge": "4.1.0",
+    "toastr": "2.1.4",
+    "react-redux-toastr": "7.2.1"
   },
   "dependencies": {
     "@types/redux-actions": "^2.2.3"

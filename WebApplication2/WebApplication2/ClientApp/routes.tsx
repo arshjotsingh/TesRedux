@@ -10,13 +10,14 @@ import TodosPage from './components/todo/TodoPage';
 import ManageTodoPage from './components/todo/ManageTodoPage';
 import { PrivateRoute } from './components/PrivateRoute';
 import Login from './components/Login';
+import ReduxToastr from 'react-redux-toastr';
 
 export const routes = <Layout>
     <Route exact path='/' component={Home} />
     <Route path='/counter' component={Counter} />
     <Route path='/about' component={AboutPage} />
     <Route path='/login' component={Login} />
-    <Route path='/todo/:id?' component={ManageTodoPage} />
     <Route path='/fetchdata/:startDateIndex?' component={FetchData} />
     <PrivateRoute path='/todos' component={TodosPage} />
+    <PrivateRoute path='/todo/:id?' component={ManageTodoPage} />
 </Layout>;
