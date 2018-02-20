@@ -13,7 +13,6 @@ type TodoProps =
     & RouteComponentProps<{}>;
 
 
-
 export class TodosPage extends React.Component<TodoProps, {}> {
     constructor(props: TodoProps) {
         super(props);

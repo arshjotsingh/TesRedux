@@ -135,7 +135,6 @@ export class ManageTodoPage extends React.Component<TodoProps, localState> {
 
 const mapStateToProps = (state: ApplicationState, ownProps: TodoProps) => {
     const todoId = ownProps.match.params.id; // from the path 'course/id'
-    console.log(todoId);
     let todo = { name: '', isComplete: false };
 
     if (todoId) {

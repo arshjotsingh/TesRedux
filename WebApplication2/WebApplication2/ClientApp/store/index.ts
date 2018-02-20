@@ -1,6 +1,7 @@
 import * as WeatherForecasts from './WeatherForecasts';
 import * as Counter from './Counter';
 import * as Todos from './Todos';
+import * as User from './User';
 import { reducer as toastrReducer } from 'react-redux-toastr';
 
 // The top-level state object
@@ -8,6 +9,7 @@ export interface ApplicationState {
     counter: Counter.CounterState;
     weatherForecasts: WeatherForecasts.WeatherForecastsState;
     todos: Todos.TodoState;
+    user: User.UserState;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using
@@ -17,6 +19,7 @@ export const reducers = {
     counter: Counter.reducer,
     weatherForecasts: WeatherForecasts.reducer,
     todos: Todos.reducer,
+    user: User.reducer,
     toastr: toastrReducer
 };
 
